@@ -5,7 +5,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.8" />
+	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
 	</ItemGroup>
@@ -13,6 +16,10 @@
     <ProjectReference Include="..\..\core\Core.DataAccess\Core.DataAccess.csproj" />
     <ProjectReference Include="..\..\core\Core.Security\Core.Security.csproj" />
     <ProjectReference Include="..\HospitalProject.Model\HospitalProject.Model.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Repositories\Abstracts\" />
+    <Folder Include="Repositories\Concretes\" />
   </ItemGroup>
 
 </Project>

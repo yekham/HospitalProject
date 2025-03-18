@@ -16,4 +16,5 @@ public sealed class Doctor : Entity<int>
     public string Specialty { get; set; }
     public int HospitalId { get; set; }
     public Hospital Hospital { get; set; }
+    public ICollection<Appointment> Appointments { get; set; }
 }
