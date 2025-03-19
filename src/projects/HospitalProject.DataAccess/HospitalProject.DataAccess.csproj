@@ -17,9 +17,5 @@
     <ProjectReference Include="..\..\core\Core.Security\Core.Security.csproj" />
     <ProjectReference Include="..\HospitalProject.Model\HospitalProject.Model.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Repositories\Abstracts\" />
-    <Folder Include="Repositories\Concretes\" />
-  </ItemGroup>
 
 </Project>

@@ -36,7 +36,6 @@ public abstract class EfRepositoryBase<TEntity, TId, TContext> : IRepository<TEn
 
     public List<TEntity> GetAll(Expression<Func<TEntity, bool>>? filter = null, bool include = true, bool enableTracking = true)
     {
-        // SELECT [] FROM TENTITY WHERE [] ORDER BY []
 
         IQueryable<TEntity> query = Context.Set<TEntity>();
 

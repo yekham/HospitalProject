@@ -17,6 +17,9 @@
     <ProjectReference Include="..\..\core\Core.CrossCuttingConcerns\Core.CrossCuttingConcerns.csproj" />
     <ProjectReference Include="..\HospitalProject.DataAccess\HospitalProject.DataAccess.csproj" />
     <ProjectReference Include="..\HospitalProject.Model\HospitalProject.Model.csproj" />
+  </ItemGroup>	
+  <ItemGroup>
+    <Folder Include="Validations\" />
   </ItemGroup>
 
 </Project>
