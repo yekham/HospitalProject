@@ -32,11 +32,12 @@ class AppointmentService : IAppointmentService
         return AppointmentMessages.AppointmentAdded;
     }
 
-    public async Task DeleteAsync(int id, CancellationToken cancellationToken = default)
+    public async Task<string> DeleteAsync(int id, CancellationToken cancellationToken = default)
     {
         await _appointmentBusinessRules.AppointmentIsPresentAsync(id);
         Appointment appointment = await _appointmentRepository.GetAsync(filter: x => x.Id == id, include: false, cancellationToken: cancellationToken);
         await _appointmentRepository.DeleteAsync(appointment, cancellationToken);
+        return AppointmentMessages.AppointmentDeleted;
     }
 
     public async Task<List<AppointmentResponseDto>> GetAllAsync(CancellationToken cancellationToken = default)
@@ -67,10 +68,11 @@ class AppointmentService : IAppointmentService
         return appointmentResponseDto;
     }
 
-    public async Task UpdateAsync(AppointmentUpdateRequestDto dto, CancellationToken cancellationToken = default)
+    public async Task<string> UpdateAsync(AppointmentUpdateRequestDto dto, CancellationToken cancellationToken = default)
     {
         await _appointmentBusinessRules.AppointmentIsPresentAsync(dto.Id);
         Appointment appointment = _mapper.Map<Appointment>(dto);
         await _appointmentRepository.UpdateAsync(appointment, cancellationToken);
+        return AppointmentMessages.AppointmentUpdated;
     }
 }

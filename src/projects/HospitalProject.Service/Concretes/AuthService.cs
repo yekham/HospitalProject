@@ -43,8 +43,7 @@ public sealed class AuthService : IAuthService
 
         AccessToken accessToken = await _jwtService.CreateAccessTokenAsync(userWithToken);
 
-        return accessToken;
- 
+        return accessToken; 
 
     }
 

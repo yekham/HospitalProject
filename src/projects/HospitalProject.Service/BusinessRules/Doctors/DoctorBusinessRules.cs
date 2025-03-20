@@ -30,4 +30,12 @@ public class DoctorBusinessRules
             throw new NotFoundException(DoctorMessages.DoctorNotFound);
         }
     }
+    public async Task CheckDoctorNameIsUnique(string name, string surname)
+    {
+        var isUnique = await _doctorRepository.AnyAsync(x => x.FirstName == name && x.LastName ==surname);
+        if (isUnique)
+        {
+            throw new BusinessException(DoctorMessages.DoctorAlreadyExists);
+        }
+    }
 }

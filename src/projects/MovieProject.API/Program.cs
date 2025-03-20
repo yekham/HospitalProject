@@ -1,9 +1,12 @@
 ﻿using Core.Security;
 using Core.Security.Encryption;
 using Core.Security.JWT;
-using HospitalAppointmentProject.DataAccess.Contexts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
+using HospitalProject.DataAccess;
+using HospitalProject.Service;
+using Core.CrossCuttingConcerns.Exceptions;
+using System.Security.Claims;
+
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpContextAccessor();
@@ -13,15 +16,13 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddSecurityDependencies();
 
 //Veri tabani baglantilarini yapilandiriyoruz.
-//builder.Services.AddDataAccessDependencies(builder.Configuration);
+builder.Services.AddDataAccessDependencies(builder.Configuration);
 
 //Service katmanindaki bagimliliklari yapilandiriyoruz.
-//builder.Services.AddServiceDependencies();
+builder.Services.AddServiceDependencies();
 
 builder.Services.AddControllers();
 
-builder.Services.AddDbContext<BaseDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection")));
 
 TokenOptions tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
@@ -37,10 +38,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
             ValidIssuer = tokenOptions.Issuer,
             ValidAudience = tokenOptions.Audience,
-            IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
+            IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey),
+            RoleClaimType = ClaimTypes.Role
         };
 
     });
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -60,7 +63,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
-//app.UseMiddleware<ExceptionMiddleware>();
+app.UseMiddleware<ExceptionMiddleware>();
 app.MapControllers();
 
 app.Run();

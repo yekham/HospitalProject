@@ -22,17 +22,19 @@ public sealed class DoctorService : IDoctorService
 
     public async Task<string> AddAsync(DoctorAddRequestDto dto, CancellationToken cancellationToken = default)
     {
+        await _doctorBusinessRules.CheckDoctorNameIsUnique(dto.FirstName, dto.LastName);
         await _doctorBusinessRules.CheckDoctorLimitInHospital(dto.HospitalId, dto.Specialty, cancellationToken);
         Doctor doctor = _mapper.Map<Doctor>(dto);
         await _doctorRepository.AddAsync(doctor, cancellationToken);
         return DoctorMessages.DoctorAdded;
     }
 
-    public async Task DeleteAsync(int id, CancellationToken cancellationToken = default)
+    public async Task<string> DeleteAsync(int id, CancellationToken cancellationToken = default)
     {
         await _doctorBusinessRules.DoctorIsPresentAsync(id);
         Doctor doctor = await _doctorRepository.GetAsync(filter: x => x.Id == id, include: false, cancellationToken: cancellationToken);
         await _doctorRepository.DeleteAsync(doctor, cancellationToken);
+        return DoctorMessages.DoctorDeleted;
     }
 
     public async Task<List<DoctorResponseDto>> GetAllAsync(CancellationToken cancellationToken = default)
@@ -57,10 +59,11 @@ public sealed class DoctorService : IDoctorService
         return doctorResponseDto;
     }
 
-    public async Task UpdateAsync(DoctorUpdateRequestDto dto, CancellationToken cancellationToken = default)
+    public async Task<string> UpdateAsync(DoctorUpdateRequestDto dto, CancellationToken cancellationToken = default)
     {
         await _doctorBusinessRules.DoctorIsPresentAsync(dto.Id);
         Doctor doctor = _mapper.Map<Doctor>(dto);
         await _doctorRepository.UpdateAsync(doctor, cancellationToken);
+        return DoctorMessages.DoctorUpdated;
     }
 }

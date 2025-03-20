@@ -22,6 +22,7 @@ public sealed class JwtService : IJwtService
         List<Role> roles = await _userRoleRepository.Query()
             .AsNoTracking()
             .Where(u => u.UserId == user.Id)
+            .Include(ur => ur.Role)
             .Select(r => new Role { Id = r.RoleId, Name = r.Role.Name })
             .ToListAsync();
 

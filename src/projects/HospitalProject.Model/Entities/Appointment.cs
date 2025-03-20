@@ -8,9 +8,6 @@ public sealed class Appointment : Entity<int>
     {
         AppointmentDate = DateTime.Now;
         Notes = string.Empty;
-        Doctor = new Doctor();
-        Patient = new Patient();
-
     }
     public DateTime AppointmentDate { get; set; }
     public string Notes { get; set; }

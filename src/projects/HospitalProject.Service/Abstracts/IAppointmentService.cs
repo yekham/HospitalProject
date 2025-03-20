@@ -5,9 +5,9 @@ namespace HospitalProject.Service.Abstracts;
 public interface IAppointmentService
 {
     Task<string> AddAsync(AppointmentAddRequestDto dto, CancellationToken cancellationToken = default);
-    Task UpdateAsync(AppointmentUpdateRequestDto dto, CancellationToken cancellationToken = default);
+    Task<string> UpdateAsync(AppointmentUpdateRequestDto dto, CancellationToken cancellationToken = default);
 
-    Task DeleteAsync(int id, CancellationToken cancellationToken = default);
+    Task<string> DeleteAsync(int id, CancellationToken cancellationToken = default);
 
     Task<AppointmentResponseDto> GetByIdAsync(int id, CancellationToken cancellationToken = default);
 

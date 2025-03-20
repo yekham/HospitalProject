@@ -28,7 +28,6 @@ public sealed class AppointmentBusinessRules(IAppointmentRepository appointmentR
                  a.AppointmentDate >= startDate &&
                  a.AppointmentDate <= endDate);
 
-        // Eğer varsa hata fırlattık
         if (existingAppointment)
         {
             throw new BusinessException(AppointmentMessages.AppointmentRulesForPatient);
