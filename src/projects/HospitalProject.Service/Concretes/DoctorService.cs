@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Core.CrossCuttingConcerns.Validation;
+using FluentValidation;
 using HospitalProject.DataAccess.Repositories.Abstracts;
 using HospitalProject.Model.Dtos.Doctors;
 using HospitalProject.Model.Entities;
@@ -12,16 +14,19 @@ public sealed class DoctorService : IDoctorService
     private readonly IDoctorRepository _doctorRepository;
     private readonly IMapper _mapper;
     private readonly DoctorBusinessRules _doctorBusinessRules;
+    private readonly IValidator<DoctorAddRequestDto> _doctorAddRequestValidator;
 
-    public DoctorService(IDoctorRepository doctorRepository, IMapper mapper, DoctorBusinessRules doctorBusinessRules)
+    public DoctorService(IDoctorRepository doctorRepository, IMapper mapper, DoctorBusinessRules doctorBusinessRules, IValidator<DoctorAddRequestDto> doctorAddRequestValidator)
     {
         _doctorRepository = doctorRepository;
         _mapper = mapper;
         _doctorBusinessRules = doctorBusinessRules;
+        _doctorAddRequestValidator = doctorAddRequestValidator;
     }
 
     public async Task<string> AddAsync(DoctorAddRequestDto dto, CancellationToken cancellationToken = default)
     {
+        await ValidationTool.ValidateAsync(_doctorAddRequestValidator, dto);
         await _doctorBusinessRules.CheckDoctorNameIsUnique(dto.FirstName, dto.LastName);
         await _doctorBusinessRules.CheckDoctorLimitInHospital(dto.HospitalId, dto.Specialty, cancellationToken);
         Doctor doctor = _mapper.Map<Doctor>(dto);

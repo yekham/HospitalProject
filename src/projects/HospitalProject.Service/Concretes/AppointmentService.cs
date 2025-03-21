@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Core.CrossCuttingConcerns.Validation;
+using FluentValidation;
 using HospitalProject.DataAccess.Repositories.Abstracts;
 using HospitalProject.Model.Dtos.Appointments;
 using HospitalProject.Model.Entities;
@@ -14,16 +16,19 @@ class AppointmentService : IAppointmentService
     private readonly IAppointmentRepository _appointmentRepository;
     private readonly IMapper _mapper;
     private readonly AppointmentBusinessRules _appointmentBusinessRules;
+    private readonly IValidator<AppointmentAddRequestDto> _appointmentAddRequestValidator;
 
-    public AppointmentService(IAppointmentRepository appointmentRepository, IMapper mapper, AppointmentBusinessRules appointmentBusinessRules)
+    public AppointmentService(IAppointmentRepository appointmentRepository, IMapper mapper, AppointmentBusinessRules appointmentBusinessRules, IValidator<AppointmentAddRequestDto> appointmentAddRequestValidator)
     {
         _appointmentRepository = appointmentRepository;
         _mapper = mapper;
         _appointmentBusinessRules = appointmentBusinessRules;
+        _appointmentAddRequestValidator = appointmentAddRequestValidator;
     }
 
     public async Task<string> AddAsync(AppointmentAddRequestDto dto, CancellationToken cancellationToken = default)
     {
+        await ValidationTool.ValidateAsync(_appointmentAddRequestValidator, dto);
         //Bir Hasta Bir Doktordan 1 Hafta İçinde En Fazla 1 Randevu Alabilir
         await _appointmentBusinessRules.CheckIfPatientCanCreateAppointment(dto.PatientId, dto.DoctorId, dto.AppointmentDate);
 

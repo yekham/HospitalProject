@@ -10,6 +10,7 @@ public sealed class Doctor : Entity<int>
         LastName = string.Empty;
         Specialty = string.Empty;
         Hospital = new Hospital();
+        Appointments = new HashSet<Appointment>();
     }
     public string FirstName { get; set; }
     public string LastName { get; set; }

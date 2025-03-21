@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Core.CrossCuttingConcerns.Validation;
+using FluentValidation;
 using HospitalProject.DataAccess.Repositories.Abstracts;
 using HospitalProject.DataAccess.Repositories.Concretes;
 using HospitalProject.Model.Dtos.Patients;
@@ -21,16 +23,19 @@ public sealed class PatientService : IPatientService
     private readonly IMapper _mapper;
     private readonly IPatientRepository _patientRepository;
     private readonly PatientBusinessRules _patientBusinessRules;
+    private readonly IValidator<PatientAddRequestDto> _patientAddRequestValidator;
 
-    public PatientService(IMapper mapper, IPatientRepository patientRepository, PatientBusinessRules patientBusinessRules)
+    public PatientService(IMapper mapper, IPatientRepository patientRepository, PatientBusinessRules patientBusinessRules, IValidator<PatientAddRequestDto> patientAddRequestValidator)
     {
         _mapper = mapper;
         _patientRepository = patientRepository;
         _patientBusinessRules = patientBusinessRules;
+        _patientAddRequestValidator = patientAddRequestValidator;
     }
 
     public async Task<string> AddAsync(PatientAddRequestDto dto, CancellationToken cancellationToken = default)
     {
+        await ValidationTool.ValidateAsync(_patientAddRequestValidator, dto);
         await _patientBusinessRules.CheckPatientNameIsUnique(dto.FirstName, dto.LastName);
         Patient patient = _mapper.Map<Patient>(dto);
         await _patientRepository.AddAsync(patient, cancellationToken);
