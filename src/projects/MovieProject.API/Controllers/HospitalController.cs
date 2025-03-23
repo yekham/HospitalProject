@@ -18,14 +18,14 @@ public class HospitalController : ControllerBase
     }
 
     [HttpPost("Add")]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Add(HospitalAddRequestDto dto)
     {
         var result = await _hospitalService.AddAsync(dto);
         return Ok(result);
     }
     [HttpPut("update")]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Update(HospitalUpdateRequestDto dto)
     {
         await _hospitalService.UpdateAsync(dto);
@@ -33,7 +33,7 @@ public class HospitalController : ControllerBase
     }
 
     [HttpDelete("delete/{id}")]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(int id)
     {
         await _hospitalService.DeleteAsync(id);

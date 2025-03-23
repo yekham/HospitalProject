@@ -18,25 +18,28 @@ public class PatientController : ControllerBase
     }
 
     [HttpPost("Add")]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Add(PatientAddRequestDto dto)
     {
         var result = await _patientService.AddAsync(dto);
         return Ok(result);
     }
     [HttpPut("update")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Update(PatientUpdateRequestDto dto)
     {
         await _patientService.UpdateAsync(dto);
         return Ok();
     }
     [HttpDelete("delete/{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(int id)
     {
         await _patientService.DeleteAsync(id);
         return Ok();
     }
     [HttpGet("getall")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetAll()
     {
         var result = await _patientService.GetAllAsync();

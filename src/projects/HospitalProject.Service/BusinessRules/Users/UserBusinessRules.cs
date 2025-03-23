@@ -42,15 +42,6 @@ public class UserBusinessRules(IUserRepository userRepository)
             throw new NotFoundException(UserMessages.UserNotFound);
     }
 
-    //public async Task EnsureUserIsAdminAsync(int userId)
-    //{
-    //    var user = await userRepository.GetByIdAsync(userId);
-    //    var roles = await userRepository.GetUserRolesAsync(userId);
-    //    if (!roles.Any(role => role.Name == "Admin"))
-    //    {
-    //        throw new BusinessException("Sadece admin kullanıcılar bu işlemi gerçekleştirebilir.");
-    //    }
-    //}
 
     //// Kullanıcı sadece kendi randevusunu görebilir ve güncelleyebilir
     //public void EnsureUserOwnsAppointment(int userId, int appointmentUserId)

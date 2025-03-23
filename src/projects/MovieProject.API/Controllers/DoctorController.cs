@@ -18,7 +18,7 @@ public class DoctorController : ControllerBase
     }
 
     [HttpPost("add")]
-    //[Authorize(Roles = "Admin")] 
+    [Authorize(Roles = "Admin")] 
     public async Task<IActionResult> AddDoctor(DoctorAddRequestDto dto, CancellationToken cancellationToken = default)
     {
         var result = await _doctorService.AddAsync(dto, cancellationToken);
@@ -26,12 +26,14 @@ public class DoctorController : ControllerBase
     }
 
     [HttpGet("getall")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetAllDoctors(CancellationToken cancellationToken = default)
     {
         var doctors = await _doctorService.GetAllAsync(cancellationToken);
         return Ok(doctors);
     }
     [HttpPut("update")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> UpdateDoctor(DoctorUpdateRequestDto dto, CancellationToken cancellationToken = default)
     {
         var result = await _doctorService.UpdateAsync(dto, cancellationToken);
@@ -39,6 +41,7 @@ public class DoctorController : ControllerBase
     }
 
     [HttpDelete("delete/{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteDoctor(int id, CancellationToken cancellationToken = default)
     {
         var result = await _doctorService.DeleteAsync(id, cancellationToken);
